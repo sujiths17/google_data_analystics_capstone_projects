@@ -1,0 +1,575 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+```
+
+
+
+
+Introduction
+
+This is my version of the Google Data Analytics Capstone - Case Study 1. The full document to the case study can be found in the Google Data Analytics Capstone: Complete a Case Study course.
+
+For this project this steps will be followed to ensure its completion:
+
+It will follow the steps of the data analysis process: Ask, prepare, process, analyze, share, and act.
+Each step will follow its own roadmap with:
+Code, if needed on the step.
+Guiding questions, with answers.
+Key tasks, as a checklist.
+Deliverable, as a checklist.
+
+Ask
+For the ask step, first let's get some context from the cyclistic document:
+
+Scenario
+
+You are a junior data analyst working in the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, your team wants to understand how casual riders and annual members use Cyclistic bikes dierently. From these insights, your team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve your recommendations, so they must be backed up with compelling data insights and professional data visualizations.
+
+Characters and teams
+Cyclistic: A bike-share program that features more than 5,800 bicycles and 600 docking stations. Cyclistic sets itself apart by also oering reclining bikes, hand tricycles, and cargo bikes, making bike-share more inclusive to people with disabilities and riders who can’t use a standard two-wheeled bike. The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use them to commute to work each day.
+Lily Moreno: The director of marketing and your manager. Moreno is responsible for the development of campaigns and initiatives to promote the bike-share program. These may include email, social media, and other channels.
+Cyclistic marketing analytics team: A team of data analysts who are responsible for collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy. You joined this team six months ago and have been busy learning about Cyclistic’s mission and business goals — as well as how you, as a junior data analyst, can help Cyclistic achieve them.
+Cyclistic executive team: The notoriously detail-oriented executive team will decide whether to approve the recommended marketing program.
+
+Guiding questions
+What is the problem you are trying to solve?
+The main objective is to determine a way to build a profile for annual members and the best marketing strategies to turn casual bike riders into annual members.
+
+How can your insights drive business decisions?
+The insights will help the marketing team to increase annual members.
+
+
+Key tasks
+[x] Identify the business task
+[x] Consider key stakeholders
+
+Deliverable
+[x] A clear statement of the business task
+
+Find the keys differences between casual and members riders and how digital midia could influence them
+
+
+Prepare
+The project will use the data provided by this kaggle dataset. But Google also provided their own link with the same dataset but expanded with more years and station descriptions.
+
+
+Guiding questions
+Where is your data located?
+The data is located in a kaggle dataset.
+
+How is the data organized?
+The data is separated by month, each on it's own csv.
+
+Are there issues with bias or credibility in this data? Does your data ROCCC?
+Bias isn't a problem, the population of the dataset is it's own clients as bike riders. And have full credibility for the same reason. And finally, it's ROCCC because it's reliable, original, comprehensive, current and cited.
+
+How are you addressing licensing, privacy, security, and accessibility?
+The company has their own licence over the dataset. Besides that, the dataset doesn't have any personal information about the riders.
+
+How did you verify the data’s integrity?
+All the files have consistent columns and each column has the correct type of data.
+
+How does it help you answer your question?
+It may have some key insights about the riders and their riding style
+
+Are there any problems with the data?
+It would be good to have some updated information about the bike stations. Also more information about the riders could be useful.
+
+
+Key tasks
+[x] Download data and store it appropriately.
+[x] Identify how it’s organized.
+[x] Sort and filter the data.
+[x] Determine the credibility of the data.
+
+Deliverable
+[x] A description of all data sources used
+The main data source is 12 months (Between april 2020 and march 2021) of riding data provided by the Cicylistic company.
+
+
+Process
+This step will prepare the data for analysis. All the csv files will be merged into one file to improve workflow
+
+
+Code
+
+Dependences
+The main dependencie for the project will be tidyverse.
+
+
+```{r}
+```
+install.packages("ggplot")
+```{r}
+```
+
+library(tidyverse)
+```{r}
+```
+
+library(janitor)
+library(lubridate)
+library(dplyr)
+library(tibble)
+library(ggplot2)
+
+```{r}
+```
+
+(mypath <- file.path(r"(E:\vscode\r\files)","202004-divvy-tripdata.csv"))
+(mypath1 <- file.path(r"(E:\vscode\r\files)","202005-divvy-tripdata.csv"))
+
+(mypath2 <- file.path(r"(E:\vscode\r\files)","202006-divvy-tripdata.csv"))
+
+(mypath3 <- file.path(r"(E:\vscode\r\files)","202007-divvy-tripdata.csv"))
+(mypath4 <- file.path(r"(E:\vscode\r\files)","202008-divvy-tripdata.csv"))
+(mypath5 <- file.path(r"(E:\vscode\r\files)","202009-divvy-tripdata.csv"))
+
+(mypath6 <- file.path(r"(E:\vscode\r\files)","202010-divvy-tripdata.csv"))
+(mypath7 <- file.path(r"(E:\vscode\r\files)","202011-divvy-tripdata.csv"))
+(mypath8 <- file.path(r"(E:\vscode\r\files)","202012-divvy-tripdata.csv"))
+(mypath9 <- file.path(r"(E:\vscode\r\files)","202101-divvy-tripdata.csv"))
+(mypath10 <- file.path(r"(E:\vscode\r\files)","202102-divvy-tripdata.csv"))
+(mypath11 <- file.path(r"(E:\vscode\r\files)","202103-divvy-tripdata.csv"))
+
+```
+
+c1 <- read.csv(mypath)
+c2 <- read.csv(mypath1)
+c3 <- read.csv(mypath2)
+c4 <- read.csv(mypath3)
+c5 <- read.csv(mypath4)
+c6 <- read.csv(mypath5)
+c7 <- read.csv(mypath6)
+c8 <- read.csv(mypath7)
+c9 <- read.csv(mypath8)
+c10 <- read.csv(mypath9)
+c11 <- read.csv(mypath10)
+c12 <- read.csv(mypath11)
+```{r}
+```
+print("Comparing Data for Integration")
+
+compare_df_cols(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12)
+
+
+```{r}
+```{r}
+
+```
+print("Data Binding ")
+
+bikes1 <- rbind(c1,c2,c3)
+bikes2 <- rbind(c4,c5,c6)
+bikes3 <- rbind(c7,c8,c9)
+bikes4 <- rbind(c10,c11,c12)
+bikes5 <- rbind(bikes1,bikes2)
+bikes6 <- rbind(bikes3,bikes4)
+ALL_DATA <- rbind(bikes5,bikes6)
+
+```
+
+```{r}
+
+```
+cyclistic_merged  <- ALL_DATA
+```{r}
+```
+head(cyclistic_merged)
+
+```{r}
+```
+#Data cleaning
+
+
+print("CLEAN UP AND ADD DATA TO PREPARE FOR ANALYSIS")
+
+
+print("Removing missing values from Rows and columns)
+
+cyclistic_merged <- janitor::remove_empty(cyclistic_merged,which = c("cols"))
+cyclistic_merged <- janitor::remove_empty(cyclistic_merged,which = c("rows"))
+
+```{r}
+```{r}
+```
+print("Removing duplicates")
+
+
+cyclistic_merged <- distinct(cyclistic_merged)
+```{r}
+```
+print("Inspect the new dataset that has been created")
+
+colnames(cyclistic_merged)  #List of column names
+
+```{r}
+```
+print("no of rows")
+
+nrow(cyclistic_merged)
+```{r}
+```
+
+print("dimension")
+
+dim(cyclistic_merged)
+```{r}
+```
+print("summary of data")
+
+summary(cyclistic_merged)  #Statistical summary of data. Mainly for numerics
+
+```{r}
+```
+
+print("Add columns that list the date, month, day, and year of each ride")
+
+cyclistic_merged$ymd <- as.Date(cyclistic_merged$started_at) #The default format is yyyy-mm-dd
+cyclistic_merged$month <- format(as.Date(cyclistic_merged$ymd), "%m")
+cyclistic_merged$day <- format(as.Date(cyclistic_merged$ymd), "%d")
+cyclistic_merged$year <- format(as.Date(cyclistic_merged$ymd), "%Y")
+cyclistic_merged$weekday <- weekdays(cyclistic_merged$ymd)
+
+```{r}
+```
+
+print("Converting Char datatype to Time stamp")
+
+
+cyclistic_merged$started_at <- lubridate::ymd_hms(cyclistic_merged$started_at)
+cyclistic_merged$ended_at <- lubridate::ymd_hms(cyclistic_merged$ended_at)
+
+```{r}
+```
+print("Calculating the start_hour & end_hour of Trips")
+
+cyclistic_merged$start_hour <- lubridate::hour(cyclistic_merged$started_at)
+cyclistic_merged$end_hour <- lubridate::hour(cyclistic_merged$ended_at)
+```
+
+```{r}
+plot(cars)
+```
+```{r}
+```{r}
+```
+print("Calculating the ride length of trips")
+
+cyclistic_merged$Ride_Length_Minutes <- difftime(cyclistic_merged$ended_at,cyclistic_merged$started_at, units="mins") #IN MINUTES
+
+cyclistic_merged$Ride_Length <- cyclistic_merged$ended_at - cyclistic_merged$started_at #IN SECONDS
+
+```{r}
+```
+print("Dropping extra columns & filtering Ride_Length > 0")
+
+Bikes_Data <- cyclistic_merged %>% filter(Ride_Length >0) %>% drop() %>%
+  select(-end_station_id,-end_station_name,-start_lat,-start_lng,-end_lat,-end_lng,-start_station_id)
+
+```{r}
+```
+
+head(Bikes_Data)
+```{r}
+```
+print("data cleaning we will arrange data in ascending order according to the date")
+
+Bikes_Data <- arrange(Bikes_Data, started_at)
+
+```{r}
+```
+print("we can view our data by executing tibble(). In order to ensure the correct data types of each column as well as for viewing the right order of data.")
+
+
+tibble(Bikes_Data)
+```{r}
+Analyze
+Now it's time to do the analysis of data we cleaned earlier.
+
+
+```{r}
+```
+print("Mean of Ride_length in Minutes")
+
+Bikes_Data %>%
+  summarise(mean_ridelength_mins = mean(Ride_Length_Minutes, na.rm=TRUE))
+
+```{r}
+```
+
+print("Mean of Ride_length of both groups")
+
+Bikes_Data %>%
+  group_by(member_casual) %>% 
+  summarise(mean_ridelength_mins = mean(Ride_Length_Minutes, na.rm=TRUE)) # minutes
+
+Bikes_Data %>%
+  group_by(member_casual) %>% 
+  summarise(mean_ridelength_secs = mean(Ride_Length, na.rm=TRUE)) #seconds
+```{r}
+```
+print("hence average ride length of casual riders is much greater than the members.")
+
+```{r}
+```
+
+print("Mean of Ride_length in Secs")
+
+Bikes_Data %>%
+  summarise(mean_ride_length = mean(Ride_Length, na.rm=TRUE))
+```{r}
+```
+
+print("MAX Ride_length")
+
+Bikes_Data %>% 
+group_by(member_casual) %>% 
+    summarise(max_ride_length_ = max(Ride_Length_Minutes, na.rm=TRUE)) #Minutes
+
+
+Bikes_Data %>% 
+group_by(member_casual) %>% 
+    summarise(max_ride_length_Secs = max(Ride_Length, na.rm=TRUE)) # Seconds
+```{r}
+```
+print("Here we can see the clear difference that maximum ride length of casual riders is greater than members.")
+
+```{r}
+```
+print("MIN Ride_length")
+
+Bikes_Data %>% 
+group_by(member_casual) %>% 
+    summarise(min_ride_length_ = min(Ride_Length_Minutes, na.rm=TRUE)) #Minutes
+
+Bikes_Data %>% 
+group_by(member_casual) %>% 
+    summarise(min_ride_length_secs = min(Ride_Length, na.rm=TRUE)) #seconds
+
+```{r}
+```
+print("Median of Ride length (minutes and seconds)")
+
+
+Bikes_Data %>%
+  summarise(median_ride_length = median(Bikes_Data$Ride_Length_Minutes, na.rm=TRUE))
+            
+Bikes_Data %>%
+  summarise(median_ride_length_secs = median(Bikes_Data$Ride_Length, na.rm=TRUE))
+```{r}
+```
+print("Median of Ride length Casual & member riders")
+
+Bikes_Data %>%
+  group_by(member_casual) %>% 
+  summarise(median_ride_length = median(Ride_Length_Minutes, na.rm=TRUE))
+            
+Bikes_Data %>%
+  group_by(member_casual) %>% 
+  summarise(median_ride_length_secs = median(Ride_Length, na.rm=TRUE))
+
+```{r}
+```
+
+print("bove cases median ride length of casual riders is also greater than members.")
+```{r}
+```
+print("Mode of weekday")
+
+find_mode <- function(x) {
+  u <- unique(x)
+  tab <- tabulate(match(x, u))
+  u[tab == max(tab)]
+}
+
+find_mode(Bikes_Data$weekday)
+
+```{r}
+```
+
+print("here we have concluded that the most of the rides are booked on saturday.")
+```{r}
+```
+print("See the average ride time by each day for members vs casual users¶")
+
+aggregate(Bikes_Data$Ride_Length_Minutes ~ Bikes_Data$member_casual + Bikes_Data$weekday, FUN = mean)
+
+```{r}
+```
+print("Ordering days of the week.")
+
+Bikes_Data$weekday <- ordered(Bikes_Data$weekday, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+
+```{r}
+```
+
+
+```{r}
+```Share
+Choosing R for Data Vizualization
+
+
+```{r}
+```
+print("Analyze ridership data by type and weekday")
+
+Bikes_Data %>% 
+  group_by(member_casual, weekday) %>%  #groups by usertype and weekday
+  summarise(number_of_rides = n() ,						#calculates the number of rides
+  average_duration = mean(Ride_Length_Minutes)) %>% # calculates the average duration
+  arrange(member_casual, weekday)
+
+```{r}
+```
+
+print("Let's visualize the number of rides by rider type")
+
+
+Bikes_Data %>% 
+  group_by(member_casual, weekday) %>% 
+  summarise(number_of_rides = n() ,						
+  average_duration = mean(Ride_Length_Minutes)) %>% 		
+  arrange(member_casual, weekday)%>% 
+  ggplot(aes(x = weekday, y = number_of_rides, fill = member_casual)) +
+  labs(title="Number of Rides By Weekdays", x = "Weekday", y = "Number of Rides") +
+  geom_col(position = "dodge")
+```{r}
+```
+print("display the visual representation of average duration vs weekday of of causal and member riders.")
+
+Bikes_Data %>% 
+  group_by(member_casual, weekday) %>% 
+  summarise(number_of_rides = n(),
+  average_duration = mean(Ride_Length_Minutes)) %>% 		
+  arrange(member_casual, weekday)%>% 		
+ggplot(aes(x = weekday, y = average_duration, fill = member_casual)) +
+  labs(title="Average Duration By Weekdays", x ="Weekday", y = "Average Duration") +
+  geom_col(position = "dodge")
+
+```{r}
+```
+print("Here we can clearly observe that average duration of ride length of casual riders are greater than member .")
+
+```{r}
+```
+print("Let's create a visualization for average duration per month")
+
+Bikes_Data %>% 
+  group_by(member_casual, month) %>% 
+  summarise(number_of_rides = n(),
+  average_duration = mean(Ride_Length_Minutes)) %>% 		
+  arrange(member_casual, month)%>% 		
+ggplot(aes(x = month, y = average_duration, fill = member_casual)) +
+  labs(title="Average Duration By Months", x = "Month", y = "Average Duration") +
+  geom_col(position = "dodge")
+
+```{r}
+```
+print("Let's create the vizualization for most used starting stations by members")
+
+
+Bikes_Data%>% 
+filter(member_casual=="member"& start_station_name != " ") %>%
+  group_by(start_station_name) %>% 
+  summarise(number_of_rides = n()) %>% 
+  arrange(-number_of_rides) %>% 
+  head(15) %>%
+ ggplot(aes(x = number_of_rides, y = reorder(start_station_name,number_of_rides) ,fill=start_station_name))+
+  labs(title = "Most used starting stations by members", x="Number of Rides", y="Start Station") +
+  geom_col(position = "dodge")
+
+
+```{r}
+```
+
+print("Let's create the vizualization for most used starting stations by casual riders")
+
+Bikes_Data%>% 
+filter(member_casual=="casual"& start_station_name != "missing") %>%
+  group_by(start_station_name) %>% 
+  summarise(number_of_rides = n()) %>% 
+  arrange(-number_of_rides) %>% 
+  head(15) %>%
+ ggplot(aes(x = number_of_rides, y = reorder(start_station_name,number_of_rides) ,fill=start_station_name))+
+  labs(title = "Most used starting stations by casual riders", x= "Number of Rides", y="Start Station") +
+  geom_col(position = "dodge")
+```{r}
+```
+print("create the vizualization for Rideable Type By Number of Rides")
+
+Bikes_Data %>%
+group_by(rideable_type, member_casual)%>%
+summarize(number_of_rides=n())%>%
+ggplot(aes(x=rideable_type,y=number_of_rides, fill=member_casual))+ geom_col(position = "dodge")+
+labs(x=" Rideable Type", y="Number of Rides", title="Rideable Type by Number of Trips")
+```{r}
+```
+print("create the vizualization for Number of Rides by Hour of the day")
+
+Bikes_Data %>%
+    group_by(member_casual,start_hour) %>%
+    summarise(number_of_rides = n())%>%
+ ggplot(aes(x = start_hour, y = number_of_rides, fill = member_casual)) +
+  labs(title ="Number of Rides by Hour of the day", x = "Hour of the day", y= "Number of Rides") +
+  geom_col(position = "dodge")
+
+```{r}
+```
+Key Findings
+
+1) Members are using greater number of cyclistic bikes in all weekdays whereas casual   riders are using greater number of cyclistc bikes on weekends only.
+
+2)Average duration of rides by weekdays/months of casual riders is about 60% higher than members.
+
+3)Most used starting stations for both member and casuals are different.
+
+4)Rideable type "Docked Bike" has larger number of rides than other two types.
+
+5)There's less number of rides taken by casual riders from October to March.
+
+```{r}
+
+
+Act
+```
+Recommendations
+
+
+1) Offering some Off % on subscription fee of membership.
+
+2) Giving benefits like discounts on first few months rides after subscription.
+Also, there should be annual benefits for members like free minutes per hour, free rides based on total number of rides, so more people will take interest and subscribe to membership.
+
+3) there should be strategy of increasing number of rides in the hours of days when there are less rides by proving low cost packages for those hours.
+
+4) Number of riders who use cyclistic in their working days should be given offers so that they can use them on weekends as well.
+Also, the stations where cyclistic bikes are not frequently used should be moved to the areas where there is need of cyclistic bikes.
+
+5) The months in which rides are less than usual should be accommodated by giving discount offers, so that more rides will be taken by riders.
+
+```{r}
+```
+
+
+```{r}
+```
+
+```{r}
+```
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
